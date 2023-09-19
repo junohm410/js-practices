@@ -1,8 +1,10 @@
 const createRangedNumbers = (startNum, endNum) => {
-  return Array(endNum - startNum + 1).fill().map((_, i) => i + startNum);
-}
+  return Array(endNum - startNum + 1)
+    .fill()
+    .map((_, i) => i + startNum);
+};
 
-const numbers = createRangedNumbers(1, 20)
+const numbers = createRangedNumbers(1, 20);
 
 numbers.forEach((number) => {
   if (number % 15 === 0) {
