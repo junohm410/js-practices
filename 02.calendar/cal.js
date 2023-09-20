@@ -52,7 +52,7 @@ const targetDates = setTargetDates(firstDate, lastDate);
 
 const firstDayIdx = parseInt(firstDate.format("d"));
 
-console.log(`      ${firstDate.format('M')}月 ${firstDate.format('YYYY')}`);
+console.log(`      ${firstDate.format("M")}月 ${firstDate.format("YYYY")}`);
 console.log("日 月 火 水 木 金 土 ");
 process.stdout.write(" ".repeat(firstDayIdx * 3));
 targetDates.forEach((date) => {
