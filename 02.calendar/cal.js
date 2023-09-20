@@ -3,22 +3,24 @@ import minimist from "minimist";
 
 import ja from "dayjs/locale/ja.js";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore.js";
+import arraySupport from "dayjs/plugin/arraySupport.js";
 dayjs.locale(ja);
 dayjs.extend(isSameOrBefore);
+dayjs.extend(arraySupport);
 
 const setTargetYear = (year) => {
   if (year) {
     return year;
   } else {
-    return today.format("YYYY");
+    return parseInt(today.format("YYYY"));
   }
 };
 
 const setTargetMonth = (month) => {
   if (month) {
-    return month;
+    return month - 1;
   } else {
-    return today.format("M");
+    return parseInt(today.format("M")) - 1;
   }
 };
 
@@ -31,28 +33,28 @@ const setLastDate = (firstDate) => {
 };
 
 const setTargetDates = (firstDate, lastDate) => {
-  let days = [];
+  let dates = [];
   for (let i = firstDate; i.isSameOrBefore(lastDate); i = i.add(1, "d")) {
-    days.push(i);
+    dates.push(i);
   }
-  return days;
+  return dates;
 };
 
-const argv = minimist(process.argv.slice(2));
+const inputYearAndMonth = minimist(process.argv.slice(2));
 const today = dayjs();
 
-const targetYear = setTargetYear(argv.y);
-const targetMonth = setTargetMonth(argv.m);
+const targetYear = setTargetYear(inputYearAndMonth.y);
+const targetMonth = setTargetMonth(inputYearAndMonth.m);
 
 const firstDate = setFirstDate(targetYear, targetMonth);
 const lastDate = setLastDate(firstDate);
 const targetDates = setTargetDates(firstDate, lastDate);
 
-const firstDay = parseInt(firstDate.format("d"));
+const firstDayIdx = parseInt(firstDate.format("d"));
 
-console.log(`      ${targetMonth}月 ${targetYear}`);
+console.log(`      ${firstDate.format('M')}月 ${firstDate.format('YYYY')}`);
 console.log("日 月 火 水 木 金 土 ");
-process.stdout.write(" ".repeat(firstDay * 3));
+process.stdout.write(" ".repeat(firstDayIdx * 3));
 targetDates.forEach((date) => {
   process.stdout.write(`${date.format("D").padStart(2, " ").padEnd(3, " ")}`);
   if (date.format("dd") === "土") {
