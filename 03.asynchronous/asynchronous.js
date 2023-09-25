@@ -42,3 +42,60 @@ db.run(
       );
     })
 );
+
+await timers.setTimeout(100);
+console.log("================================");
+
+const createTable = (tableName) => {
+  return new Promise((resolve, reject) => {
+    db.run(`create table ${tableName}(id integer primary key autoincrement, title text unique)`,
+      (err) => {
+        if (err) {
+          reject(err);
+        } else { resolve() }
+      })
+  })
+}
+
+const insertItem = (table, item) => {
+  return new Promise((resolve, reject) => {
+    db.run(`insert into ${table}(title) values(?)`, item, function () {
+        console.log(`自動採番id: ${this.lastID}`);
+        resolve();
+      }
+    );
+  });
+};
+
+const displayItemsById = (tableName, id) => {
+  return new Promise((resolve, reject) => {
+    db.get(`select * from ${tableName} where id = ?`, id, (err, row) => {
+      if (err) {
+        reject(err)
+      } else {
+        console.error(`id:${row.id} タイトル:${row.title}`);
+        resolve();
+      }
+    });
+  });
+};
+
+const dropTable = (table) => {
+  db.run(`drop table ${table}`);
+};
+
+createTable("books")
+  .then(() => insertItem("books", "チェリー本"))
+  .then(() => displayItemsById("books", 1))
+  .then(() => dropTable("books"))
+
+await timers.setTimeout(100);
+console.log("================================");
+
+createTable("books")
+  .then(() => insertItem("books", "チェリー本"))
+  .then(() => insertItem("books", "チェリー本"))
+  .catch((err) => console.error(err.message))
+  .then(() => displayItemsById("book", 1))
+  .catch((err) => console.error(err.message))
+  .then(() => dropTable("books"));
