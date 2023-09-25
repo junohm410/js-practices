@@ -21,6 +21,7 @@ db.run(
   "create table books(id integer primary key autoincrement, title text unique)",
   () =>
     db.run("insert into books (title) values(?)", "チェリー本", function () {
+      console.log(`自動採番id: ${this.lastID}`);
       db.run(
         "insert into books (title) values(?)",
         "チェリー本",
@@ -63,9 +64,13 @@ const createTable = (tableName) => {
 
 const insertItem = (table, item) => {
   return new Promise((resolve, reject) => {
-    db.run(`insert into ${table}(title) values(?)`, item, function () {
-      console.log(`自動採番id: ${this.lastID}`);
-      resolve();
+    db.run(`insert into ${table}(title) values(?)`, item, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        console.log(`自動採番id: ${this.lastID}`);
+        resolve();
+      }
     });
   });
 };
