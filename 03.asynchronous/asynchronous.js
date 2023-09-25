@@ -42,7 +42,7 @@ db.run(
             if (err) {
               console.error(err.message);
             } else {
-              console.error(`id:${row.id} タイトル:${row.title}`);
+              console.log(`id:${row.id} タイトル:${row.title}`);
             }
             db.run("drop table books");
           });
@@ -91,7 +91,7 @@ const displayItemsById = (tableName, id) => {
       if (err) {
         reject(err);
       } else {
-        console.error(`id:${row.id} タイトル:${row.title}`);
+        console.log(`id:${row.id} タイトル:${row.title}`);
         resolve();
       }
     });
