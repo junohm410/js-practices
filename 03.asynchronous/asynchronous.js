@@ -2,6 +2,10 @@ import timers from "timers/promises";
 import sqlite3 from "sqlite3";
 const db = new sqlite3.Database(":memory:");
 
+console.log("======コールバック/エラーなし======");
+console.log();
+
+// コールバック/エラーなしのコードと実行
 db.run(
   "create table books(id integer primary key autoincrement, title text unique)",
   () =>
@@ -15,8 +19,11 @@ db.run(
 );
 
 await timers.setTimeout(100);
-console.log("================================");
+console.log();
+console.log("======コールバック/エラーあり======");
+console.log();
 
+// コールバック/エラーありのコードと実行
 db.run(
   "create table books(id integer primary key autoincrement, title text unique)",
   () =>
@@ -45,8 +52,11 @@ db.run(
 );
 
 await timers.setTimeout(100);
-console.log("================================");
+console.log();
+console.log("======Promise/エラーなし======");
+console.log();
 
+// Promise版以降で使用する関数の定義
 const createTable = (tableName) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -92,14 +102,18 @@ const dropTable = (table) => {
   db.run(`drop table ${table}`);
 };
 
+// Promise版/エラーなしの実行
 createTable("books")
   .then(() => insertItem("books", "チェリー本"))
   .then(() => displayItemsById("books", 1))
   .then(() => dropTable("books"));
 
 await timers.setTimeout(100);
-console.log("================================");
+console.log();
+console.log("======Promise/エラーあり======");
+console.log();
 
+// Promise版/エラーありの実行
 createTable("books")
   .then(() => insertItem("books", "チェリー本"))
   .then(() => insertItem("books", "チェリー本"))
@@ -109,8 +123,11 @@ createTable("books")
   .then(() => dropTable("books"));
 
 await timers.setTimeout(100);
-console.log("================================");
+console.log();
+console.log("======async,await/エラーなし======");
+console.log();
 
+// async,await版/エラーなしの関数の定義と実行
 const addBook = async () => {
   await createTable("books");
   await insertItem("books", "チェリー本");
@@ -121,8 +138,11 @@ const addBook = async () => {
 addBook();
 
 await timers.setTimeout(100);
-console.log("================================");
+console.log();
+console.log("======async,await/エラーあり======");
+console.log();
 
+// async,await版/エラーありの関数の定義と実行
 const addBookWithError = async () => {
   try {
     await createTable("books");
