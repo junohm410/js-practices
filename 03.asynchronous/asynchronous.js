@@ -27,27 +27,20 @@ console.log();
 db.run(
   "create table books(id integer primary key autoincrement, title text unique)",
   () =>
-    db.run("insert into books (title) values(?)", "チェリー本", function () {
-      console.log(`自動採番id: ${this.lastID}`);
-      db.run(
-        "insert into books (title) values(?)",
-        "チェリー本",
-        function (err) {
-          if (err) {
-            console.error(err.message);
-          } else {
-            console.log(`自動採番id: ${this.lastID}`);
-          }
-          db.get("select * from book where id = ?", 1, (err, row) => {
-            if (err) {
-              console.error(err.message);
-            } else {
-              console.log(`id:${row.id} タイトル:${row.title}`);
-            }
-            db.run("drop table books");
-          });
+    db.run("insert into book (title) values(?)", "チェリー本", function (err) {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log(`自動採番id: ${this.lastID}`);
+      }
+      db.get("select * from book where id = ?", 1, (err, row) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log(`id:${row.id} タイトル:${row.title}`);
         }
-      );
+        db.run("drop table books");
+      });
     })
 );
 
@@ -115,8 +108,7 @@ console.log();
 
 // Promise版/エラーありの実行
 createTable("books")
-  .then(() => insertItem("books", "チェリー本"))
-  .then(() => insertItem("books", "チェリー本"))
+  .then(() => insertItem("book", "チェリー本"))
   .catch((err) => console.error(err.message))
   .then(() => displayItemsById("book", 1))
   .catch((err) => console.error(err.message))
@@ -146,8 +138,7 @@ console.log();
 const addBookWithError = async () => {
   try {
     await createTable("books");
-    await insertItem("books", "チェリー本");
-    await insertItem("books", "チェリー本");
+    await insertItem("book", "チェリー本");
   } catch (err) {
     console.error(err.message);
   }
