@@ -8,7 +8,7 @@ dayjs.locale(ja);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(arraySupport);
 
-const setTargetYear = (year) => {
+const determineTargetYear = (year) => {
   if (year) {
     return year;
   } else {
@@ -16,7 +16,7 @@ const setTargetYear = (year) => {
   }
 };
 
-const setTargetMonth = (month) => {
+const determineTargetMonth = (month) => {
   if (month) {
     return month - 1;
   } else {
@@ -24,7 +24,7 @@ const setTargetMonth = (month) => {
   }
 };
 
-const setTargetDates = (firstDate, lastDate) => {
+const organizeTargetDates = (firstDate, lastDate) => {
   let dates = [];
   const formattedLastDate = parseInt(lastDate.format("D"))
   for (let i = 1; i <= formattedLastDate; i++) {
@@ -40,12 +40,12 @@ const setTargetDates = (firstDate, lastDate) => {
 const inputYearAndMonth = minimist(process.argv.slice(2));
 const today = dayjs();
 
-const targetYear = setTargetYear(inputYearAndMonth.y);
-const targetMonth = setTargetMonth(inputYearAndMonth.m);
+const targetYear = determineTargetYear(inputYearAndMonth.y);
+const targetMonth = determineTargetMonth(inputYearAndMonth.m);
 
 const firstDate = dayjs([targetYear, targetMonth]);
 const lastDate = firstDate.endOf("month");
-const targetDates = setTargetDates(firstDate, lastDate);
+const targetDates = organizeTargetDates(firstDate, lastDate);
 
 const firstDayIdx = parseInt(firstDate.format("d"));
 
