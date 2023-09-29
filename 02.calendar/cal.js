@@ -24,14 +24,6 @@ const setTargetMonth = (month) => {
   }
 };
 
-const setFirstDate = (year, month) => {
-  return dayjs([year, month]);
-};
-
-const setLastDate = (firstDate) => {
-  return firstDate.endOf("month");
-};
-
 const setTargetDates = (firstDate, lastDate) => {
   let dates = [];
   const formattedLastDate = parseInt(lastDate.format("D"))
@@ -51,8 +43,8 @@ const today = dayjs();
 const targetYear = setTargetYear(inputYearAndMonth.y);
 const targetMonth = setTargetMonth(inputYearAndMonth.m);
 
-const firstDate = setFirstDate(targetYear, targetMonth);
-const lastDate = setLastDate(firstDate);
+const firstDate = dayjs([targetYear, targetMonth]);
+const lastDate = firstDate.endOf("month");
 const targetDates = setTargetDates(firstDate, lastDate);
 
 const firstDayIdx = parseInt(firstDate.format("d"));
@@ -62,7 +54,7 @@ console.log("日 月 火 水 木 金 土 ");
 process.stdout.write(" ".repeat(firstDayIdx * 3));
 targetDates.forEach((date) => {
   process.stdout.write(`${date.format("D").padStart(2, " ").padEnd(3, " ")}`);
-  if (date.format("dd") === "土") {
+  if (date.day() === 6) {
     console.log();
   }
 });
