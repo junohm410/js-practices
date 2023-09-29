@@ -34,8 +34,13 @@ const setLastDate = (firstDate) => {
 
 const setTargetDates = (firstDate, lastDate) => {
   let dates = [];
-  for (let i = firstDate; i.isSameOrBefore(lastDate); i = i.add(1, "d")) {
-    dates.push(i);
+  const formattedLastDate = parseInt(lastDate.format("D"))
+  for (let i = 1; i <= formattedLastDate; i++) {
+    if (i > 1) {
+      dates.push(firstDate.add(i - 1, "d"));
+    } else {
+      dates.push(firstDate);
+    }
   }
   return dates;
 };
