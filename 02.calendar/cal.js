@@ -12,7 +12,7 @@ const determineTargetYear = (year) => {
   if (year) {
     return year;
   } else {
-    return parseInt(today.format("YYYY"));
+    return today.year();
   }
 };
 
@@ -20,14 +20,13 @@ const determineTargetMonth = (month) => {
   if (month) {
     return month - 1;
   } else {
-    return parseInt(today.format("M")) - 1;
+    return today.month();
   }
 };
 
 const organizeTargetDates = (firstDate, lastDate) => {
   let dates = [];
-  const formattedLastDate = parseInt(lastDate.format("D"))
-  for (let i = 1; i <= formattedLastDate; i++) {
+  for (let i = 1; i <= lastDate.date(); i++) {
     if (i > 1) {
       dates.push(firstDate.add(i - 1, "d"));
     } else {
@@ -47,7 +46,7 @@ const firstDate = dayjs([targetYear, targetMonth]);
 const lastDate = firstDate.endOf("month");
 const targetDates = organizeTargetDates(firstDate, lastDate);
 
-const firstDayIdx = parseInt(firstDate.format("d"));
+const firstDayIdx = firstDate.day();
 
 console.log(`      ${firstDate.format("M")}月 ${firstDate.format("YYYY")}`);
 console.log("日 月 火 水 木 金 土 ");
