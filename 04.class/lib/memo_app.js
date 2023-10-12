@@ -1,13 +1,9 @@
 import * as readline from "node:readline/promises";
-import enquirer from "enquirer";
-const { prompt } = enquirer;
 import sqlite3 from "sqlite3";
 export const db = new sqlite3.Database("memo.sqlite");
-import { Memo } from "./memo.js";
 
 export class MemoApp {
   command;
-  #memos;
   static buildMemoApp = async () => {
     await this.#createMemoTable();
     return new this();
@@ -64,32 +60,5 @@ export class MemoApp {
         console.log("メモの追加が完了しました。");
       });
     }
-  };
-  deleteMemo = async () => {
-    const memos = await this.#organizeAllMemos();
-    if (memos.length === 0) {
-      console.log("メモがありません。");
-      return;
-    }
-    this.#memos = memos.map((memo) => new Memo(memo));
-    const choices = this.#memos.map((memo) => {
-      return {
-        name: memo.firstLine(),
-        message: memo.firstLine(),
-        value: memo.id,
-      };
-    });
-    const selectedMemo = await prompt({
-      type: "select",
-      name: "id",
-      message: "Choose a note you want to delete:",
-      choices: choices,
-      result() {
-        return this.focused.value;
-      },
-    });
-    db.run(`delete from memos where id = ?`, [selectedMemo.id], () => {
-      console.log("メモの削除が完了しました。");
-    });
   };
 }
