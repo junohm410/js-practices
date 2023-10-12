@@ -40,31 +40,6 @@ export class MemoApp {
       });
     });
   };
-  readMemo = async () => {
-    const memos = await this.#organizeAllMemos();
-    if (memos.length === 0) {
-      console.log("メモがありません。");
-      return;
-    }
-    this.#memos = memos.map((memo) => new Memo(memo));
-    const choices = this.#memos.map((memo) => {
-      return {
-        name: memo.firstLine(),
-        message: memo.firstLine(),
-        value: memo.content,
-      };
-    });
-    const selectedMemo = await prompt({
-      type: "select",
-      name: "content",
-      message: "Choose a note you want to see:",
-      choices: choices,
-      result() {
-        return this.focused.value;
-      },
-    });
-    console.log(selectedMemo.content);
-  };
   insertMemo = async () => {
     const rl = readline.createInterface({ input: process.stdin });
     const readInputLines = () => {
