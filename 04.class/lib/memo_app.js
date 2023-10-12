@@ -24,7 +24,7 @@ export class MemoApp {
   addCommand = (command) => {
     this.command = command;
   };
-  #organizeAllMemos = () => {
+  static organizeAllMemos = () => {
     return new Promise((resolve, reject) => {
       db.all(`select * from memos`, (err, rows) => {
         if (err) {

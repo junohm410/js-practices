@@ -1,12 +1,12 @@
 import enquirer from "enquirer";
 const { prompt } = enquirer;
-import { db } from "./memo_app.js";
+import { MemoApp } from "./memo_app.js";
 import { Memo } from "./memo.js";
 
 export class ReadMemoCommand {
   #memos;
   execute = async () => {
-    const memos = await this.#organizeAllMemos();
+    const memos = await MemoApp.organizeAllMemos();
     if (memos.length === 0) {
       console.log("メモがありません。");
       return;
@@ -29,16 +29,5 @@ export class ReadMemoCommand {
       },
     });
     console.log(selectedMemo.content);
-  };
-  #organizeAllMemos = () => {
-    return new Promise((resolve, reject) => {
-      db.all(`select * from memos`, (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
   };
 }

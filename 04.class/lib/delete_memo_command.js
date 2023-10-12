@@ -1,12 +1,12 @@
 import enquirer from "enquirer";
 const { prompt } = enquirer;
-import { db } from "./memo_app.js";
+import { db, MemoApp } from "./memo_app.js";
 import { Memo } from "./memo.js";
 
 export class DeleteMemoCommand {
   #memos;
   execute = async () => {
-    const memos = await this.#organizeAllMemos();
+    const memos = await MemoApp.organizeAllMemos();
     if (memos.length === 0) {
       console.log("メモがありません。");
       return;
@@ -30,17 +30,6 @@ export class DeleteMemoCommand {
     });
     db.run(`delete from memos where id = ?`, [selectedMemo.id], () => {
       console.log("メモの削除が完了しました。");
-    });
-  };
-  #organizeAllMemos = () => {
-    return new Promise((resolve, reject) => {
-      db.all(`select * from memos`, (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
     });
   };
 }
