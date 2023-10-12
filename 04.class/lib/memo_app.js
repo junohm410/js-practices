@@ -26,7 +26,7 @@ export class MemoApp {
   };
   static organizeAllMemos = () => {
     return new Promise((resolve, reject) => {
-      db.all(`select * from memos`, (err, rows) => {
+      db.all(`select * from memos order by id`, (err, rows) => {
         if (err) {
           reject(err);
         } else {
