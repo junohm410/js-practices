@@ -1,7 +1,7 @@
 import * as readline from "node:readline/promises";
 import { db } from "./memo_app.js";
 
-export class InsertMemoCommand {
+export default class InsertMemoCommand {
   execute = async () => {
     const rl = readline.createInterface({ input: process.stdin });
     const readInputLines = () => {

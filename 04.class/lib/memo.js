@@ -1,4 +1,4 @@
-export class Memo {
+export default class Memo {
   constructor(memo) {
     this.id = memo.id;
     this.content = memo.content;

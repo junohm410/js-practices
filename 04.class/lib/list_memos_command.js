@@ -1,7 +1,7 @@
 import { MemoApp } from "./memo_app.js"
-import { Memo } from "./memo.js";
+import Memo from "./memo.js";
 
-export class ListMemosCommand {
+export default class ListMemosCommand {
   #memos;
   execute = async () => {
     const memos = await MemoApp.organizeAllMemos();

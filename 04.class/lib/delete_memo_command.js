@@ -1,9 +1,9 @@
 import enquirer from "enquirer";
 const { prompt } = enquirer;
 import { db, MemoApp } from "./memo_app.js";
-import { Memo } from "./memo.js";
+import Memo from "./memo.js";
 
-export class DeleteMemoCommand {
+export default class DeleteMemoCommand {
   #memos;
   execute = async () => {
     const memos = await MemoApp.organizeAllMemos();

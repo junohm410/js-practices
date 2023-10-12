@@ -1,9 +1,9 @@
 import minimist from "minimist";
 import { MemoApp } from "./lib/memo_app.js";
-import { ListMemosCommand } from "./lib/list_memos_command.js";
-import { ReadMemoCommand } from "./lib/read_memo_command.js";
-import { DeleteMemoCommand } from "./lib/delete_memo_command.js";
-import { InsertMemoCommand } from "./lib/insert_memo_command.js";
+import ListMemosCommand from "./lib/list_memos_command.js";
+import ReadMemoCommand from "./lib/read_memo_command.js";
+import DeleteMemoCommand from "./lib/delete_memo_command.js";
+import InsertMemoCommand from "./lib/insert_memo_command.js";
 
 const main = async () => {
   const options = minimist(process.argv.slice(2));
