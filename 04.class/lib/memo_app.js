@@ -2,10 +2,11 @@ import * as readline from "node:readline/promises";
 import enquirer from "enquirer";
 const { prompt } = enquirer;
 import sqlite3 from "sqlite3";
-const db = new sqlite3.Database("memo.sqlite");
+export const db = new sqlite3.Database("memo.sqlite");
 import { Memo } from "./memo.js";
 
 export class MemoApp {
+  command;
   #memos;
   static buildMemoApp = async () => {
     await this.#createMemoTable();
@@ -25,6 +26,9 @@ export class MemoApp {
       );
     });
   };
+  addCommand = (command) => {
+    this.command = command;
+  };
   #organizeAllMemos = () => {
     return new Promise((resolve, reject) => {
       db.all(`select * from memos`, (err, rows) => {
@@ -35,15 +39,6 @@ export class MemoApp {
         }
       });
     });
-  };
-  showAllMemos = async () => {
-    const memos = await this.#organizeAllMemos();
-    if (memos.length === 0) {
-      console.log("メモがありません。");
-      return;
-    }
-    this.#memos = memos.map((memo) => new Memo(memo));
-    this.#memos.forEach((memo) => console.log(memo.firstLine()));
   };
   readMemo = async () => {
     const memos = await this.#organizeAllMemos();
