@@ -4,6 +4,9 @@ const { prompt } = enquirer;
 export default class DeletedMemoSelector {
   #question;
   constructor(memos) {
+    prompt.on("cancel", () => {
+      process.exit();
+    });
     const choices = memos.map((memo) => {
       return {
         name: memo.firstLine(),
