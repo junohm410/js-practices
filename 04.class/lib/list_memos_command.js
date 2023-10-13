@@ -1,4 +1,4 @@
-import { MemoApp } from "./memo_app.js"
+import { MemoApp } from "./memo_app.js";
 import Memo from "./memo.js";
 
 export default class ListMemosCommand {

@@ -3,7 +3,7 @@ import ReadlineInterface from "./readline_interface.js";
 
 export default class InsertMemoCommand {
   execute = async () => {
-    const readlineInterface = new ReadlineInterface()
+    const readlineInterface = new ReadlineInterface();
     await readlineInterface.readInputLines();
     if (readlineInterface.isInputFirstLineEmpty()) {
       console.log("注: 1行目が空白だけのメモは追加できません。");
