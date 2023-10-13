@@ -22,7 +22,7 @@ export default class DeleteMemoCommand {
     const selectedMemo = await prompt({
       type: "select",
       name: "id",
-      message: "Choose a note you want to delete:",
+      message: "削除したいメモを選んでください:",
       choices: choices,
       result() {
         return this.focused.value;

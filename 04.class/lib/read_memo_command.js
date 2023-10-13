@@ -22,7 +22,7 @@ export default class ReadMemoCommand {
     const selectedMemo = await prompt({
       type: "select",
       name: "content",
-      message: "Choose a note you want to see:",
+      message: "表示したいメモを選んでください:",
       choices: choices,
       result() {
         return this.focused.value;
