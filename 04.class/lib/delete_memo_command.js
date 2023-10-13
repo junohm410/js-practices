@@ -1,7 +1,6 @@
-import enquirer from "enquirer";
-const { prompt } = enquirer;
 import { db, MemoApp } from "./memo_app.js";
 import Memo from "./memo.js";
+import DeletedMemoSelector from "./deleted_memo_selector.js";
 
 export default class DeleteMemoCommand {
   #memos;
@@ -12,22 +11,8 @@ export default class DeleteMemoCommand {
       return;
     }
     this.#memos = memos.map((memo) => new Memo(memo));
-    const choices = this.#memos.map((memo) => {
-      return {
-        name: memo.firstLine(),
-        message: memo.firstLine(),
-        value: memo.id,
-      };
-    });
-    const selectedMemo = await prompt({
-      type: "select",
-      name: "id",
-      message: "削除したいメモを選んでください:",
-      choices: choices,
-      result() {
-        return this.focused.value;
-      },
-    });
+    const memoSelector = new DeletedMemoSelector(this.#memos);
+    const selectedMemo = await memoSelector.askForSelection();
     db.run(`delete from memos where id = ?`, [selectedMemo.id], () => {
       console.log("メモの削除が完了しました。");
     });

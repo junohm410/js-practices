@@ -1,7 +1,6 @@
-import enquirer from "enquirer";
-const { prompt } = enquirer;
 import { MemoApp } from "./memo_app.js";
 import Memo from "./memo.js";
+import ReadMemoSelector from "./read_memo_selector.js";
 
 export default class ReadMemoCommand {
   #memos;
@@ -12,22 +11,8 @@ export default class ReadMemoCommand {
       return;
     }
     this.#memos = memos.map((memo) => new Memo(memo));
-    const choices = this.#memos.map((memo) => {
-      return {
-        name: memo.firstLine(),
-        message: memo.firstLine(),
-        value: memo.content,
-      };
-    });
-    const selectedMemo = await prompt({
-      type: "select",
-      name: "content",
-      message: "表示したいメモを選んでください:",
-      choices: choices,
-      result() {
-        return this.focused.value;
-      },
-    });
+    const memoSelector = new ReadMemoSelector(this.#memos);
+    const selectedMemo = await memoSelector.askForSelection();
     console.log(selectedMemo.content);
   };
 }
