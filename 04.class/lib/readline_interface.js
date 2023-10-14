@@ -4,6 +4,11 @@ export default class ReadlineInterface {
   #inputLines;
   #interface = readline.createInterface({ input: process.stdin });
   readInputLines = async () => {
+    if (process.stdin.isTTY) {
+      console.log(
+        "メモを入力してください。\n最後の行を入力し終えたら、改行してCONTROL+Dで保存します。\n"
+      );
+    }
     this.#inputLines = await new Promise((resolve) => {
       let lines = [];
       this.#interface.on("line", (line) => {
