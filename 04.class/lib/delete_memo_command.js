@@ -13,7 +13,7 @@ export default class DeleteMemoCommand {
     this.#memos = memos.map((memo) => new Memo(memo));
     const memoSelector = new DeletedMemoSelector(this.#memos);
     const selectedMemo = await memoSelector.askForSelection();
-    db.run(`delete from memos where id = ?`, [selectedMemo.id], () => {
+    db.run("delete from memos where id = ?", [selectedMemo.id], () => {
       console.log("メモの削除が完了しました。");
     });
   };

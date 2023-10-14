@@ -10,7 +10,7 @@ export class MemoApp {
   static #createMemoTable = () => {
     return new Promise((resolve, reject) => {
       db.run(
-        `create table if not exists memos(id integer primary key autoincrement, content text not null)`,
+        "create table if not exists memos(id integer primary key autoincrement, content text not null)",
         (err) => {
           if (err) {
             reject(err);
@@ -26,7 +26,7 @@ export class MemoApp {
   };
   static organizeAllMemos = () => {
     return new Promise((resolve, reject) => {
-      db.all(`select * from memos order by id`, (err, rows) => {
+      db.all("select * from memos order by id", (err, rows) => {
         if (err) {
           reject(err);
         } else {
