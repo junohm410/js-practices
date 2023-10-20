@@ -4,7 +4,7 @@ import Memo from "./memo.js";
 export default class ListMemosCommand {
   #memos;
   execute = async () => {
-    const memos = await MemoApp.organizeAllMemos();
+    const memos = await MemoApp.retrieveAllMemos();
     if (memos.length === 0) {
       console.log("メモがありません。");
       return;

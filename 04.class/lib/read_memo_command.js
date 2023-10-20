@@ -5,7 +5,7 @@ import ReadMemoSelector from "./read_memo_selector.js";
 export default class ReadMemoCommand {
   #memos;
   execute = async () => {
-    const memos = await MemoApp.organizeAllMemos();
+    const memos = await MemoApp.retrieveAllMemos();
     if (memos.length === 0) {
       console.log("メモがありません。");
       return;

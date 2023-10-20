@@ -5,7 +5,7 @@ import DeletedMemoSelector from "./deleted_memo_selector.js";
 export default class DeleteMemoCommand {
   #memos;
   execute = async () => {
-    const memos = await MemoApp.organizeAllMemos();
+    const memos = await MemoApp.retrieveAllMemos();
     if (memos.length === 0) {
       console.log("メモがありません。");
       return;
