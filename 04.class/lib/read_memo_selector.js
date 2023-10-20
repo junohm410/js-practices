@@ -9,8 +9,8 @@ export default class ReadMemoSelector {
     });
     const choices = memos.map((memo) => {
       return {
-        name: memo.firstLine(),
-        message: memo.firstLine(),
+        name: memo.firstLine,
+        message: memo.firstLine,
         value: memo.content,
       };
     });

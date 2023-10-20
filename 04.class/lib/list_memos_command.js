@@ -10,6 +10,6 @@ export default class ListMemosCommand {
       return;
     }
     this.#memos = memos.map((memo) => new Memo(memo));
-    this.#memos.forEach((memo) => console.log(memo.firstLine()));
+    this.#memos.forEach((memo) => console.log(memo.firstLine));
   };
 }
