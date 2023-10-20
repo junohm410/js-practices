@@ -10,15 +10,14 @@ const main = async () => {
   const memoApp = await MemoApp.buildMemoApp();
   const allMemos = memoApp.memos;
   if (options.l) {
-    memoApp.addCommand(new ListMemosCommand(allMemos));
+    new ListMemosCommand(allMemos).execute();
   } else if (options.r) {
-    memoApp.addCommand(new ReadMemoCommand(allMemos));
+    new ReadMemoCommand(allMemos).execute();
   } else if (options.d) {
-    memoApp.addCommand(new DeleteMemoCommand(allMemos));
+    new DeleteMemoCommand(allMemos).execute();
   } else {
-    memoApp.addCommand(new InsertMemoCommand());
+    new InsertMemoCommand().execute();
   }
-  memoApp.command.execute();
 };
 
 main();

@@ -3,7 +3,6 @@ export const db = new sqlite3.Database("memo.sqlite");
 import Memo from "./memo.js";
 
 export class MemoApp {
-  command;
   constructor(allMemos) {
     this.memos = allMemos.map((memo) => new Memo(memo));
   }
@@ -25,9 +24,6 @@ export class MemoApp {
         }
       );
     });
-  };
-  addCommand = (command) => {
-    this.command = command;
   };
   static #retrieveAllMemos = () => {
     return new Promise((resolve, reject) => {
