@@ -20,9 +20,8 @@ export default class ReadlineInterface {
     });
   };
   isInputFirstLineEmpty = () => {
-    return (
-      this.#inputLines[0] === "" || this.#inputLines[0].match(/^[\s\u3000]+$/g)
-    );
+    const inputFirstLine = this.#inputLines[0];
+    return !inputFirstLine || inputFirstLine.match(/^[\s\u3000]+$/g);
   };
   get newMemoByInputLines() {
     return this.#inputLines.join("\n");
