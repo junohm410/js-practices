@@ -20,9 +20,9 @@ export default class MemoController {
       return;
     }
     const selectionMessage = "表示したいメモを選んでください:";
-    const memoSelector = new MemoSelector(this.#memos, selectionMessage)
+    const memoSelector = new MemoSelector(this.#memos, selectionMessage);
     const selectedMemo = await memoSelector.askForSelection();
-    const targetMemo = this.#memos.find(memo => selectedMemo.id === memo.id)
+    const targetMemo = this.#memos.find((memo) => selectedMemo.id === memo.id);
     console.log(targetMemo.content);
   };
   deleteMemo = async () => {
@@ -30,7 +30,7 @@ export default class MemoController {
       console.log("メモがありません。");
       return;
     }
-    const selectionMessage = "削除したいメモを選んでください:"
+    const selectionMessage = "削除したいメモを選んでください:";
     const memoSelector = new MemoSelector(this.#memos, selectionMessage);
     const selectedMemo = await memoSelector.askForSelection();
     db.run("delete from memos where id = ?", [selectedMemo.id], () => {

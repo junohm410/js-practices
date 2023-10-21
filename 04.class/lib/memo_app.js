@@ -4,12 +4,12 @@ import Memo from "./memo.js";
 import MemoController from "./memo_controller.js";
 
 export class MemoApp {
-  #memos
-  #options
-  #controller
+  #memos;
+  #options;
+  #controller;
   constructor(allMemos, options) {
     this.#memos = allMemos.map((memo) => new Memo(memo));
-    this.#options = options
+    this.#options = options;
     this.#controller = new MemoController(this.#memos);
   }
   static buildMemoApp = async (options) => {
@@ -43,8 +43,8 @@ export class MemoApp {
     });
   };
   execute = () => {
-    const options = this.#options
-    const controller = this.#controller
+    const options = this.#options;
+    const controller = this.#controller;
     if (options.l) {
       controller.listMemos();
     } else if (options.r) {
@@ -54,5 +54,5 @@ export class MemoApp {
     } else {
       controller.insertMemo();
     }
-  }
+  };
 }
