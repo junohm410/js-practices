@@ -1,6 +1,5 @@
 import { db } from "./memo_app.js";
-import ReadMemoSelector from "./read_memo_selector.js";
-import DeletedMemoSelector from "./deleted_memo_selector.js";
+import MemoSelector from "./memo_selector.js";
 import ReadlineInterface from "./readline_interface.js";
 
 export default class MemoController {
@@ -20,16 +19,19 @@ export default class MemoController {
       console.log("メモがありません。");
       return;
     }
-    const memoSelector = new ReadMemoSelector(this.#memos);
+    const selectionMessage = "表示したいメモを選んでください:";
+    const memoSelector = new MemoSelector(this.#memos, selectionMessage)
     const selectedMemo = await memoSelector.askForSelection();
-    console.log(selectedMemo.content);
+    const targetMemo = this.#memos.find(memo => selectedMemo.id === memo.id)
+    console.log(targetMemo.content);
   };
   deleteMemo = async () => {
     if (this.#memos.length === 0) {
       console.log("メモがありません。");
       return;
     }
-    const memoSelector = new DeletedMemoSelector(this.#memos);
+    const selectionMessage = "削除したいメモを選んでください:"
+    const memoSelector = new MemoSelector(this.#memos, selectionMessage);
     const selectedMemo = await memoSelector.askForSelection();
     db.run("delete from memos where id = ?", [selectedMemo.id], () => {
       console.log("メモの削除が完了しました。");
