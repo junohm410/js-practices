@@ -24,7 +24,7 @@ export default class ReadlineInterface {
       this.#inputLines[0] === "" || this.#inputLines[0].match(/^[\s\u3000]+$/g)
     );
   };
-  formatInputLinesToMemo = () => {
+  get newMemoByInputLines() {
     return this.#inputLines.join("\n");
-  };
+  }
 }

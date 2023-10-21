@@ -43,7 +43,7 @@ export default class MemoController {
     if (readlineInterface.isInputFirstLineEmpty()) {
       console.log("注: 1行目が空白だけのメモは追加できません。");
     } else {
-      const newMemo = readlineInterface.formatInputLinesToMemo();
+      const newMemo = readlineInterface.newMemoByInputLines;
       db.run(`insert into memos(content) values(?)`, [newMemo], () => {
         console.log("メモの追加が完了しました。");
       });
