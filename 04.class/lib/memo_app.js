@@ -1,17 +1,16 @@
 import sqlite3 from "sqlite3";
 export const db = new sqlite3.Database("memo.sqlite");
 import Memo from "./memo.js";
-import ListMemosCommand from "./list_memos_command.js";
-import ReadMemoCommand from "./read_memo_command.js";
-import DeleteMemoCommand from "./delete_memo_command.js";
-import InsertMemoCommand from "./insert_memo_command.js";
+import MemoController from "./memo_controller.js";
 
 export class MemoApp {
   #memos
   #options
+  #controller
   constructor(allMemos, options) {
     this.#memos = allMemos.map((memo) => new Memo(memo));
     this.#options = options
+    this.#controller = new MemoController(this.#memos);
   }
   static buildMemoApp = async (options) => {
     await this.#createMemoTable();
@@ -45,15 +44,15 @@ export class MemoApp {
   };
   execute = () => {
     const options = this.#options
-    const memos = this.#memos
+    const controller = this.#controller
     if (options.l) {
-      new ListMemosCommand(memos).execute();
+      controller.listMemos();
     } else if (options.r) {
-      new ReadMemoCommand(memos).execute();
+      controller.readMemo();
     } else if (options.d) {
-      new DeleteMemoCommand(memos).execute();
+      controller.deleteMemo();
     } else {
-      new InsertMemoCommand().execute();
+      controller.insertMemo();
     }
   }
 }
