@@ -10,9 +10,26 @@ export default class CommandLineInterface {
     });
     this.#memos = memos;
   }
-  askForSelection = async (message) => {
+  askForSelectingMemo = (message) => {
     const question = this.#createSelectingQuestion(message);
-    return await prompt(question);
+    return prompt(question);
+  };
+  askForInsertingMemo = (message) => {
+    const readlineInterface = readline.createInterface({
+      input: process.stdin,
+    });
+    if (process.stdin.isTTY) {
+      console.log(message);
+    }
+    return new Promise((resolve) => {
+      let lines = [];
+      readlineInterface.on("line", (line) => {
+        lines.push(line);
+      });
+      readlineInterface.on("close", () => {
+        resolve(lines);
+      });
+    });
   };
   #createSelectingQuestion = (message) => {
     const choices = this.#memos.map((memo) => {
@@ -31,22 +48,5 @@ export default class CommandLineInterface {
         return this.focused.value;
       },
     };
-  };
-  askForInsertingMemo = (message) => {
-    const readlineInterface = readline.createInterface({
-      input: process.stdin,
-    });
-    if (process.stdin.isTTY) {
-      console.log(message);
-    }
-    return new Promise((resolve) => {
-      let lines = [];
-      readlineInterface.on("line", (line) => {
-        lines.push(line);
-      });
-      readlineInterface.on("close", () => {
-        resolve(lines);
-      });
-    });
   };
 }

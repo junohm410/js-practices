@@ -9,7 +9,7 @@ export default class MemoController {
     this.#repository = repository;
     this.#userInterface = new CommandLineInterface(this.#memos);
   }
-  listMemos = async () => {
+  listMemos = () => {
     if (this.#memos.length === 0) {
       console.log("メモがありません。");
       return;
@@ -22,7 +22,7 @@ export default class MemoController {
       return;
     }
     const askingMessage = "表示したいメモを選んでください:";
-    const selectedMemo = await this.#userInterface.askForSelection(
+    const selectedMemo = await this.#userInterface.askForSelectingMemo(
       askingMessage
     );
     const targetMemo = this.#memos.find((memo) => selectedMemo.id === memo.id);
@@ -34,7 +34,7 @@ export default class MemoController {
       return;
     }
     const askingMessage = "削除したいメモを選んでください:";
-    const selectedMemo = await this.#userInterface.askForSelection(
+    const selectedMemo = await this.#userInterface.askForSelectingMemo(
       askingMessage
     );
     this.#repository.deleteMemo(selectedMemo.id);
