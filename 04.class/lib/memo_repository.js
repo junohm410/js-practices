@@ -29,13 +29,25 @@ export default class MemoRepository {
     });
   };
   saveMemo = (content) => {
-    this.#db.run(`insert into memos(content) values(?)`, [content], () => {
-      console.log("メモの追加が完了しました。");
+    return new Promise((resolve, reject) => {
+      this.#db.run(`insert into memos(content) values(?)`, [content], (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
   };
   deleteMemo = (id) => {
-    this.#db.run("delete from memos where id = ?", [id], () => {
-      console.log("メモの削除が完了しました。");
+    return new Promise((resolve, reject) => {
+      this.#db.run("delete from memos where id = ?", [id], (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
   };
 }

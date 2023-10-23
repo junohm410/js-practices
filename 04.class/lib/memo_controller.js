@@ -37,7 +37,8 @@ export default class MemoController {
     const selectedMemo = await this.#userInterface.askForSelectingMemo(
       askingMessage
     );
-    this.#repository.deleteMemo(selectedMemo.id);
+    await this.#repository.deleteMemo(selectedMemo.id);
+    this.#userInterface.giveMessageToUser("メモの削除が完了しました。");
   };
   insertMemo = async () => {
     const askingMessage =
@@ -51,7 +52,8 @@ export default class MemoController {
       );
     } else {
       const newMemo = this.#newMemoByInputLines(inputLines);
-      this.#repository.saveMemo(newMemo);
+      await this.#repository.saveMemo(newMemo);
+      this.#userInterface.giveMessageToUser("メモの追加が完了しました。");
     }
   };
   #isInsertedFirstLineEmpty = (inputLines) => {
