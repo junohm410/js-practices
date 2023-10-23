@@ -1,5 +1,3 @@
-import sqlite3 from "sqlite3";
-export const db = new sqlite3.Database("memo.sqlite");
 import Memo from "./memo.js";
 import MemoController from "./memo_controller.js";
 import MemoRepository from "./memo_repository.js";
@@ -15,8 +13,8 @@ export class MemoApp {
     this.#repository = repository;
     this.#controller = new MemoController(this.#memos, this.#repository);
   }
-  static buildMemoApp = async (options) => {
-    const memoRepository = new MemoRepository();
+  static buildMemoApp = async (db, options) => {
+    const memoRepository = new MemoRepository(db);
     await memoRepository.createMemoTable();
     const allMemos = await memoRepository.retrieveAllMemos();
     return new this(allMemos, memoRepository, options);

@@ -1,9 +1,11 @@
-import { db } from "./memo_app.js";
-
 export default class MemoRepository {
+  #db;
+  constructor(db) {
+    this.#db = db;
+  }
   createMemoTable = () => {
     return new Promise((resolve, reject) => {
-      db.run(
+      this.#db.run(
         "create table if not exists memos(id integer primary key autoincrement, content text not null)",
         (err) => {
           if (err) {
@@ -17,7 +19,7 @@ export default class MemoRepository {
   };
   retrieveAllMemos = () => {
     return new Promise((resolve, reject) => {
-      db.all("select * from memos order by id", (err, rows) => {
+      this.#db.all("select * from memos order by id", (err, rows) => {
         if (err) {
           reject(err);
         } else {
@@ -27,12 +29,12 @@ export default class MemoRepository {
     });
   };
   saveMemo = (content) => {
-    db.run(`insert into memos(content) values(?)`, [content], () => {
+    this.#db.run(`insert into memos(content) values(?)`, [content], () => {
       console.log("メモの追加が完了しました。");
     });
   };
   deleteMemo = (id) => {
-    db.run("delete from memos where id = ?", [id], () => {
+    this.#db.run("delete from memos where id = ?", [id], () => {
       console.log("メモの削除が完了しました。");
     });
   };
