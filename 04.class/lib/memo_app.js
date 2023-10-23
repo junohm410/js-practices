@@ -2,7 +2,7 @@ import Memo from "./memo.js";
 import MemoController from "./memo_controller.js";
 import MemoRepository from "./memo_repository.js";
 
-export class MemoApp {
+export default class MemoApp {
   #memos;
   #options;
   #repository;

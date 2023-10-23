@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 import minimist from "minimist";
-import { MemoApp } from "./lib/memo_app.js";
+import MemoApp from "./lib/memo_app.js";
 
 const main = async () => {
   const db = new sqlite3.Database("memo.sqlite");
