@@ -31,6 +31,15 @@ export default class CommandLineInterface {
       });
     });
   };
+  displayMemosFirstLines = (memos) => {
+    memos.forEach((memo) => console.log(memo.firstLine));
+  };
+  displayMemo = (memo) => {
+    console.log(memo.content);
+  };
+  giveMessageToUser = (message) => {
+    console.log(message);
+  };
   #createSelectingQuestion = (message) => {
     const choices = this.#memos.map((memo) => {
       return {

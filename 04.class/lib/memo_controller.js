@@ -11,14 +11,14 @@ export default class MemoController {
   }
   listMemos = () => {
     if (this.#memos.length === 0) {
-      console.log("メモがありません。");
+      this.#userInterface.giveMessageToUser("メモがありません。");
       return;
     }
-    this.#memos.forEach((memo) => console.log(memo.firstLine));
+    this.#userInterface.displayMemosFirstLines(this.#memos);
   };
   readMemo = async () => {
     if (this.#memos.length === 0) {
-      console.log("メモがありません。");
+      this.#userInterface.giveMessageToUser("メモがありません。");
       return;
     }
     const askingMessage = "表示したいメモを選んでください:";
@@ -26,11 +26,11 @@ export default class MemoController {
       askingMessage
     );
     const targetMemo = this.#memos.find((memo) => selectedMemo.id === memo.id);
-    console.log(targetMemo.content);
+    this.#userInterface.displayMemo(targetMemo);
   };
   deleteMemo = async () => {
     if (this.#memos.length === 0) {
-      console.log("メモがありません。");
+      this.#userInterface.giveMessageToUser("メモがありません。");
       return;
     }
     const askingMessage = "削除したいメモを選んでください:";
@@ -46,7 +46,9 @@ export default class MemoController {
       askingMessage
     );
     if (this.#isInsertedFirstLineEmpty(inputLines)) {
-      console.log("注: 1行目が空白だけのメモは追加できません。");
+      this.#userInterface.giveMessageToUser(
+        "注: 1行目が空白だけのメモは追加できません。"
+      );
     } else {
       const newMemo = this.#newMemoByInputLines(inputLines);
       this.#repository.saveMemo(newMemo);
