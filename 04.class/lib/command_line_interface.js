@@ -4,7 +4,6 @@ const { prompt } = enquirer;
 
 export default class CommandLineInterface {
   #memos;
-  #inputLines;
   constructor(memos) {
     prompt.on("cancel", () => {
       process.exit();
@@ -33,14 +32,14 @@ export default class CommandLineInterface {
       },
     };
   };
-  askForInsertingMemo = async (message) => {
+  askForInsertingMemo = (message) => {
     const readlineInterface = readline.createInterface({
       input: process.stdin,
     });
     if (process.stdin.isTTY) {
       console.log(message);
     }
-    this.#inputLines = await new Promise((resolve) => {
+    return new Promise((resolve) => {
       let lines = [];
       readlineInterface.on("line", (line) => {
         lines.push(line);
@@ -50,11 +49,4 @@ export default class CommandLineInterface {
       });
     });
   };
-  isInsertedFirstLineEmpty = () => {
-    const inputFirstLine = this.#inputLines[0];
-    return !inputFirstLine || inputFirstLine.match(/^[\s\u3000]+$/g);
-  };
-  get newMemoByInputLines() {
-    return this.#inputLines.join("\n");
-  }
 }

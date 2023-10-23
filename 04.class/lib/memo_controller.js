@@ -42,12 +42,21 @@ export default class MemoController {
   insertMemo = async () => {
     const askingMessage =
       "メモを入力してください。\n最後の行を入力し終えたら、改行してCONTROL+Dで保存します。\n";
-    await this.#userInterface.askForInsertingMemo(askingMessage);
-    if (this.#userInterface.isInsertedFirstLineEmpty()) {
+    const inputLines = await this.#userInterface.askForInsertingMemo(
+      askingMessage
+    );
+    if (this.#isInsertedFirstLineEmpty(inputLines)) {
       console.log("注: 1行目が空白だけのメモは追加できません。");
     } else {
-      const newMemo = this.#userInterface.newMemoByInputLines;
+      const newMemo = this.#newMemoByInputLines(inputLines);
       this.#repository.saveMemo(newMemo);
     }
+  };
+  #isInsertedFirstLineEmpty = (inputLines) => {
+    const inputFirstLine = inputLines[0];
+    return !inputFirstLine || inputFirstLine.match(/^[\s\u3000]+$/g);
+  };
+  #newMemoByInputLines = (inputLines) => {
+    return inputLines.join("\n");
   };
 }
