@@ -1,12 +1,13 @@
-import MemoSelector from "./memo_selector.js";
-import ReadlineInterface from "./readline_interface.js";
+import CommandLineInterface from "./command_line_interface.js";
 
 export default class MemoController {
   #memos;
   #repository;
+  #userInterface;
   constructor(memos, repository) {
     this.#memos = memos;
     this.#repository = repository;
+    this.#userInterface = new CommandLineInterface(this.#memos);
   }
   listMemos = async () => {
     if (this.#memos.length === 0) {
@@ -20,9 +21,10 @@ export default class MemoController {
       console.log("メモがありません。");
       return;
     }
-    const selectionMessage = "表示したいメモを選んでください:";
-    const memoSelector = new MemoSelector(this.#memos, selectionMessage);
-    const selectedMemo = await memoSelector.askForSelection();
+    const askingMessage = "表示したいメモを選んでください:";
+    const selectedMemo = await this.#userInterface.askForSelection(
+      askingMessage
+    );
     const targetMemo = this.#memos.find((memo) => selectedMemo.id === memo.id);
     console.log(targetMemo.content);
   };
@@ -31,18 +33,20 @@ export default class MemoController {
       console.log("メモがありません。");
       return;
     }
-    const selectionMessage = "削除したいメモを選んでください:";
-    const memoSelector = new MemoSelector(this.#memos, selectionMessage);
-    const selectedMemo = await memoSelector.askForSelection();
+    const askingMessage = "削除したいメモを選んでください:";
+    const selectedMemo = await this.#userInterface.askForSelection(
+      askingMessage
+    );
     this.#repository.deleteMemo(selectedMemo.id);
   };
   insertMemo = async () => {
-    const readlineInterface = new ReadlineInterface();
-    await readlineInterface.readInputLines();
-    if (readlineInterface.isInputFirstLineEmpty()) {
+    const askingMessage =
+      "メモを入力してください。\n最後の行を入力し終えたら、改行してCONTROL+Dで保存します。\n";
+    await this.#userInterface.askForInsertingMemo(askingMessage);
+    if (this.#userInterface.isInsertedFirstLineEmpty()) {
       console.log("注: 1行目が空白だけのメモは追加できません。");
     } else {
-      const newMemo = readlineInterface.newMemoByInputLines;
+      const newMemo = this.#userInterface.newMemoByInputLines;
       this.#repository.saveMemo(newMemo);
     }
   };
