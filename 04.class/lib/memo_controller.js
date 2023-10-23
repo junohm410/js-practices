@@ -1,11 +1,12 @@
-import { db } from "./memo_app.js";
 import MemoSelector from "./memo_selector.js";
 import ReadlineInterface from "./readline_interface.js";
 
 export default class MemoController {
   #memos;
-  constructor(memos) {
+  #repository;
+  constructor(memos, repository) {
     this.#memos = memos;
+    this.#repository = repository;
   }
   listMemos = async () => {
     if (this.#memos.length === 0) {
@@ -33,9 +34,7 @@ export default class MemoController {
     const selectionMessage = "削除したいメモを選んでください:";
     const memoSelector = new MemoSelector(this.#memos, selectionMessage);
     const selectedMemo = await memoSelector.askForSelection();
-    db.run("delete from memos where id = ?", [selectedMemo.id], () => {
-      console.log("メモの削除が完了しました。");
-    });
+    this.#repository.deleteMemo(selectedMemo.id);
   };
   insertMemo = async () => {
     const readlineInterface = new ReadlineInterface();
@@ -44,9 +43,7 @@ export default class MemoController {
       console.log("注: 1行目が空白だけのメモは追加できません。");
     } else {
       const newMemo = readlineInterface.newMemoByInputLines;
-      db.run(`insert into memos(content) values(?)`, [newMemo], () => {
-        console.log("メモの追加が完了しました。");
-      });
+      this.#repository.saveMemo(newMemo);
     }
   };
 }
