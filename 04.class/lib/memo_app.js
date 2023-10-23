@@ -5,8 +5,8 @@ import MemoRepository from "./memo_repository.js";
 export class MemoApp {
   #memos;
   #options;
-  #controller;
   #repository;
+  #controller;
   constructor(allMemos, repository, options) {
     this.#memos = allMemos.map((memo) => new Memo(memo));
     this.#options = options;
