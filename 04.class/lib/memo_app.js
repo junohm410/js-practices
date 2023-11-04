@@ -1,46 +1,23 @@
-import sqlite3 from "sqlite3";
-export const db = new sqlite3.Database("memo.sqlite");
 import Memo from "./memo.js";
 import MemoController from "./memo_controller.js";
+import MemoRepository from "./memo_repository.js";
 
-export class MemoApp {
+export default class MemoApp {
   #memos;
   #options;
+  #repository;
   #controller;
-  constructor(allMemos, options) {
+  constructor(allMemos, repository, options) {
     this.#memos = allMemos.map((memo) => new Memo(memo));
     this.#options = options;
-    this.#controller = new MemoController(this.#memos);
+    this.#repository = repository;
+    this.#controller = new MemoController(this.#memos, this.#repository);
   }
-  static buildMemoApp = async (options) => {
-    await this.#createMemoTable();
-    const allMemos = await this.#retrieveAllMemos();
-    return new this(allMemos, options);
-  };
-  static #createMemoTable = () => {
-    return new Promise((resolve, reject) => {
-      db.run(
-        "create table if not exists memos(id integer primary key autoincrement, content text not null)",
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        }
-      );
-    });
-  };
-  static #retrieveAllMemos = () => {
-    return new Promise((resolve, reject) => {
-      db.all("select * from memos order by id", (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
+  static buildMemoApp = async (db, options) => {
+    const memoRepository = new MemoRepository(db);
+    await memoRepository.createMemoTable();
+    const allMemos = await memoRepository.retrieveAllMemos();
+    return new this(allMemos, memoRepository, options);
   };
   execute = () => {
     const options = this.#options;
